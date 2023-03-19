@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  const [numbers, setNumbers] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+  const FilterList = numbers.filter((item) => item % 2 === 0);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Hello SmHee</h1>
+      <div>
+        <p>Sample1</p>
+        <ul>
+          {numbers.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p>Sample2</p>
+        <ul>
+          {FilterList.map((i) => (
+            <li>{i}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
