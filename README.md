@@ -148,4 +148,239 @@ relationship1.logFriends() 안의 forEach 문에서는 function 선언문을 사
 
 ---
 
-바보
+1. 새로 작성한 뒤, README.md 파일 저장.
+2. - 버튼 클릭
+3. commit & push 클릭
+
+---
+
+// DOMContentLoaded 이벤트는 초기 HTML 문서를 완전히 불러오고 분석했을 때 발생합니다.
+스타일 시트, 이미지, 하위 프레임의 로딩은 기다리지 않습니다. -> MDN
+defer 랑 같이보면 좋음
+
+// Dom 이 먼저 그려지기 위한 코드,
+Dom을 먼저 그리고 자바스크립트 태그를 그 다음에 실행한다.
+document.addEventListener("DOMContentLoaded", () => {
+
+// 전일, 당일, 일주일 라디오 버튼을 통해 값을 변경하도록 함
+// input name이 date_option인 값에 대하여 반복문을 돌리고, e 인자 값에 대하여
+이벤트 리스너는 radioBtnAction이 'change' 되었을때 실행된다.
+document.querySelectorAll(`input[name='date_option']`).forEach((e) => {
+e.addEventListener('change', radioBtnAction);
+});
+
+// 상세 버튼 클릭시 info 페이지로 distributionDto 데이터를 전송
+// class가 '.moreButton' 인 버튼을 클릭 했을 경우 function을 실행한다.
+$('.moreButton').on('click', function() {
+
+// 변수 data에 'dto'라는 this 값을 할당해준다.
+let data = $(this).data('dto');
+// 변수 docid에 'docid'라는 this 값을 할당해준다.
+let docid = $(this).data('docid');
+
+// input태그에서 id가 'infoData'를 찾아 value 값을 불러온뒤
+JSON.stringify(data)로 재할당 해줌 => json문자열로 변환 시킨다.
+document.getElementById('infoData').value = JSON.stringify(data); // input
+// input 태그에서 id가 'strDocId' 를 찾아 value 값을 불러온 뒤 docid에 재할당 해준다.
+document.getElementById('strDocId').value = docid;
+// form 태그에서 id가 'infoForm' 를 찾아 submit 시킨다.
+document.getElementById('infoForm').submit(); // form
+});
+
+// presentnDateCheck() 함수를 실행한다.
+presentnDateCheck();
+// class 가 datepicker 인 것을 찾아 datepicker() 함수를 실행한다.
+$('.datepicker').datepicker();
+
+//#tableCheckbox 가 클릭됐을때 function이 실행된다.
+$("#tableCheckbox").click(function() {
+//#tableCheckbox 가 checked 되었을때, input 의 name 이 checkbox 인 것을 찾아서
+  속성값이 "checked" 되어 있는 것을 true 로 바꾼다.
+        if($("#tableCheckbox").is(":checked")) $("input[name=checkbox]").prop("checked", true);
+
+// 아니라면 input 의 name 이 checkbox 인 것을 찾아서
+속성 값이 "checked" 되어 있는 것을 false 로 바꾼다.
+else $("input[name=checkbox]").prop("checked", false);
+});
+
+// input name 이 checkbox 인 버튼이 클릭 되었을 때 function이 실행된다.
+$("input[name=checkbox]").click(function() {
+// 변수 total 에 input 의 name 이 checkbox 인 것을 찾아 length 값을 할당해준다.
+var total = $("input[name=checkbox]").length;
+// 변수 chechked 에 input 의 name 이 checkbox 인 것 중에 checked 되어 있는 것만 찾아
+length 값을 할당해준다.
+var checked = $("input[name=checkbox]:checked").length;
+
+// 만약 total 값과 checked 값이 같지 않을 경우 #tableCheckbox 의 속성 값이
+"checked" 되어 있는 것을 false로 바꾼다.
+if(total != checked) $("#tableCheckbox").prop("checked", false);
+// 아니라면 #tableCheckbox 의 속성의 checked 를 true 로 바꾼다.
+else $("#tableCheckbox").prop("checked", true);
+});
+
+// form태그 에서 id가 searchForm 인 것을 찾아서 이벤트리스너를 실행하고,
+submit 되었을때 formSubmitEvent 함수를 실행한다.
+document.getElementById('searchForm').addEventListener('submit', formSubmitEvent);
+// form태그 에서 id가 beforeSearchForm 인 것을 찾아서 이벤트리스너를 실행하고,
+submit 되었을때 formSubmitEvent 함수를 실행한다.
+document.getElementById('beforeSearchForm').addEventListener('submit', formSubmitEvent);
+});
+
+// 위에서 말한 formSubmitEvent 에 대한 함수가 실행된다.
+const formSubmitEvent = (e) => {
+// preventDefault : 어떤 이벤트를 명시적으로 처리하지 않은 경우,
+해당 이벤트에 대한 기본 동작을 실행하지 않도록 지정한다.  
+ e.preventDefault();
+
+// formData 변수에 FormData instance 를 생성해주면서 e.target 을 초기값으로 세팅해줌
+const formData = new FormData(e.target);
+// condition 변수에 키값 쌍의 목록을 객체로 바꾸면서 formData를 초기값으로 세팅해줌.
+const condition = Object.fromEntries(formData);
+
+    // pinNo로 검색시 presentnNm 필수 => true일시 무효
+
+// true일시 alert 창이 뜨면서 유효성 검사를 한다. false이면 함수가 멈춤.
+if (checkPinNoWithPresentnNm(e.target.id)) {
+alert('문서열람번호로 검색시, 제출자명을 필수입니다.');
+return;
+}
+
+    // 생년월일 입력값 유효성 검증 => true일시 비정상 입력
+
+// true일시 alert 창이 뜨면서 유효성 검사를 한다. false이면 함수가 멈춤.
+if (checkBirthDeInput(e.target.id)) {
+alert(`올바른 생년월일 일자를 입력해주세요.`);
+return;
+}
+
+    // 전자지갑주소 입력값 유효성 검증
+
+// true일시 alert 창이 뜨면서 유효성 검사를 한다. false이면 함수가 멈춤.
+if (document.getElementById('ecdwAdres').value == '') {
+alert('전자지갑주소를 선택해주세요.');
+return;
+}
+
+    ////////////////////////// 유효성 검증 통과 ////////////////////////////
+
+    /* 제출일자 (시작일자, 종료일자)의 값에 대해 - 제거 */
+
+// ['presentnBgnde', 'presentnEndde'] 이 배열에 대한 반복문 시작.
+['presentnBgnde', 'presentnEndde'].forEach(str => {
+// 변수 beforeDate 에 ${e.target.id} ${str} 두 값의 value 값을 불러와 할당해준다.
+        let beforeDate = document.querySelector(`#${e.target.id} input[name='${str}']`).value;
+// input name 이 str인 것의 value 값에 재할당 해준다. 무엇을?
+   beforeDate 에 있는 - 를 아무것도 없는 것으로 바꿔준것으로!
+        document.querySelector(`#${e.target.id} input[name='${str}']`).value = beforeDate.replaceAll('-', '');
+});
+
+    /* 요청 전송 전 검색조건 쿠키 저장 */
+    //set key: conditions, value: condition, timer: 1 이런식의 문법
+    setCookie('search_conditions', JSON.stringify(condition), 1);
+    /* 요청 전송 전 스피너 실행 */
+    spinnerPopup(true);
+
+// e.tartget을 submit 시킴
+e.target.submit();
+}
+
+// presentnDateCheck 함수 실행
+const presentnDateCheck = () => {
+
+// 변수 presentnBgnde 은 input 태그의 id 가 presentnBgnde 인 value 값을 할당 해 준다.
+let presentnBgnde = document.getElementById('presentnBgnde').value;
+// 변수 presentnEndde 은 input 태그의 id 가 presentnEndde 인 value 값을 할당 해 준다.
+let presentnEndde = document.getElementById('presentnEndde').value;
+// 변수 today 는 new Date 로 초기화 시켜준 뒤 toISOString 메서드 실행한 뒤
+문자열을 0 부터 10 까지 잘라준다.
+toISOString() : 단순화한 ISO 형식의 문자열을 반환한다.
+ex) YYYY-MM-DDTHH:mm:ss.sssZ
+let today = new Date().toISOString().substring(0, 10); // yyyy-MM-dd;
+
+// 만약 presentnBgnde(제출시작일자) length 와 presentnEndde(제출종료일자) 의 length가
+0 일 경우 radioBtnAction()함수를(라디오 버튼의 이벤트) 실행.
+if (presentnBgnde.length === 0 && presentnEndde.length === 0) {
+// 둘 다 비어있을 경우 (라디오버튼 이벤트 처리)
+radioBtnAction();
+
+// 아닐 경우, presentnBgnde(제출시작일자) length 가 0이 아니고,
+presentnEndde(제출종료일자) length 가 0일때 :
+today 를 input id가 presentnEndde인 value 값으로 할당해준다.
+} else if (presentnBgnde.length !== 0 && presentnEndde.length === 0) {
+// 시작일자만 입력되었을 경우 (종료일자를 오늘로 지정)
+document.getElementById('presentnEndde').value = today;
+
+// 그것도 아닐 경우, presentnBgnde.length 가 0 이고, presentnEndde.length 가 0 이 아닐때,
+} else if (presentnBgnde.length === 0 && presentnEndde.length !== 0) {
+// 종료일자만 입력되었을 경우 (종료일자 하루 전을 지정)
+// 변수 yesterday 에 new Date instance 를 생성해주면서 presentnEndde을 초기값으로 세팅해줌.
+let yesterday = new Date(presentnEndde);
+// yesterday에 yesterday의 getDate()-1 한 값을 저장한다.
+yesterday.setDate(yesterday.getDate() - 1);
+// id가 presentnBgnde 인 값에 value 값은 yesterday.toISOString().substring(0, 10)으로 할당.
+yesterday에 toISOString을 해주고, 그 문자열을 0 부터 10까지 잘라준다.
+document.getElementById('presentnBgnde').value = yesterday.toISOString().substring(0, 10);
+}
+}
+
+// radioBtnAction 함수 실행
+const `radioBtnAction` = () => {
+// 변수 mode 는 input name이 date_option인 것 중에
+checked 되어있는 값의 value 값을 세팅해준다.
+let mode = document.querySelector(`input[name='date_option']:checked`)?.value;
+
+// toDay 변수를 new Date로 초기화
+let toDay = new Date();
+
+// toDayStr 변수는 toDay 변수에 toISOString한 뒤 문자열을 0 부터 10까지 잘라준 값을 할당.
+let toDayStr = toDay.toISOString().substring(0, 10); // yyyy-MM-dd;
+// fromDay 변수에 toDay 할당해줌.
+let fromDay = toDay;
+// fromDayStr 변수는 빈 문자열.
+let fromDayStr = "";
+// offset 변수는 0
+let offset = 0;
+
+// mode가 undefined 이거나 null 이면 0 으로 값을 대입해줘라
+switch(mode ?? '0') {
+case '0':
+// 전일
+offset = 1000 _ 60 _ 60 \* 24; // 1안 : time 계산해서 1일 빼기
+// fromDay 는 toDay의 getTime을 구해서 빼기 offset 해주기
+fromDay = new Date(toDay.getTime() - offset);
+// toDay 도 마찬가지..
+toDay = new Date(toDay.getTime() - offset);
+// fromDayStr 은 fromDay에 toISOString해준뒤 문자열을 0부터 10까지 잘라준다.
+fromDayStr = fromDay.toISOString().substring(0, 10); // yyyy-MM-dd;
+// toDayStr 은 fromDayStr 로 재할당.
+toDayStr = fromDayStr;
+// 멈춤!
+break;
+
+// mode 값이 1 일때.
+case '1':
+// 당일
+fromDayStr = toDayStr; // 오늘 날짜와 동일
+break;
+case '2':
+// 1주일
+// @TODO: 1개월 계산 확인 필요
+offset = 1000 _ 60 _ 60 _ 24 _ 6; // 1안 : time 계산해서 1주일 빼기 (7일 텀 고정)
+fromDay = new Date(toDay.getTime() - offset);
+// fromDay.setWeek(fromDay.getWeek() - 1); // 2안 : getWeek에서 1주일 빼기
+
+            fromDayStr = fromDay.toISOString().substring(0, 10);   // yyyy-MM-dd;
+            // fromDayStr = fromDayStr.match(/\d+/g).join('');  //yyymmdd
+            break;
+        default:
+            alert('정의되지 않은 요청입니다. 다시 시도해주세요.');
+            break;
+    }
+
+    document.getElementById('presentnBgnde').value = fromDayStr;
+    document.getElementById('presentnEndde').value = toDayStr;
+
+    // 위에서 선택된 값에 체크 처리
+    document.querySelectorAll(`input[name='date_option']`)[mode ?? '0'].checked = true;
+
+}
