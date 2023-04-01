@@ -147,5 +147,3 @@ relationship1.logFriends() 안의 forEach 문에서는 function 선언문을 사
    간단히 말하자면 컴포넌트에서 컴포넌트로 넘어가는 데이터.
 
 ---
-
-zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
